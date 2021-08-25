@@ -15,7 +15,10 @@ struct Dial: View {
 		let handWidth: CGFloat = 2
 		
 		GeometryReader { proxy in
+			let hourHandWidth = floor(proxy.size.width/2)
 			let hourHandRotation = Angle(degrees: hour/12 * 360 - 90)
+			
+			let minuteHandWidth = floor(proxy.size.width/2 * 0.8)
 			let minuteHandRotation = Angle(degrees: minute/60 * 360 - 90)
 			
 			Circle()
@@ -23,15 +26,15 @@ struct Dial: View {
 				.overlay(
 					RoundedRectangle(cornerRadius: handWidth/2)
 						.fill(Color.primary)
-						.frame(width: proxy.size.width/2, height: handWidth)
-						.offset(x: proxy.size.width/4)
+						.frame(width: hourHandWidth, height: handWidth)
+						.offset(x: hourHandWidth/2 - 1)
 						.rotationEffect(hourHandRotation)
 				)
 				.overlay(
 					RoundedRectangle(cornerRadius: handWidth/2)
 						.fill(Color.primary)
-						.frame(width: proxy.size.width/2 * 0.8, height: handWidth)
-						.offset(x: proxy.size.width/4 * 0.8)
+						.frame(width: minuteHandWidth, height: handWidth)
+						.offset(x: minuteHandWidth/2 - 1)
 						.rotationEffect(minuteHandRotation)
 				)
 		}
