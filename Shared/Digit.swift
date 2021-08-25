@@ -13,9 +13,9 @@ struct Digit: View {
 	let digit: Int
 	
     var body: some View {
-		VStack {
+		VStack(spacing: 0) {
 			ForEach(clockPositions.indexed(), id: \.0) { _, row in
-				HStack {
+				HStack(spacing: 0) {
 					ForEach(row.indexed(), id: \.0) { _, dial in
 						Dial(hour: dial.hour, minute: dial.minute)
 							.aspectRatio(1, contentMode: .fit)

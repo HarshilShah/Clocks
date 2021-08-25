@@ -29,12 +29,12 @@ struct Clock: View {
 	@ObservedObject var viewModel: ClockViewModel
 	
     var body: some View {
-		VStack {
-			HStack {
+		VStack(spacing: 0) {
+			HStack(spacing: 0) {
 				Digit(digit: viewModel.formattedTime.hours.0)
 				Digit(digit: viewModel.formattedTime.hours.1)
 			}
-			HStack {
+			HStack(spacing: 0) {
 				Digit(digit: viewModel.formattedTime.minutes.0)
 				Digit(digit: viewModel.formattedTime.minutes.1)
 			}
