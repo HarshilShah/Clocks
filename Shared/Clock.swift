@@ -44,7 +44,7 @@ struct Clock: View {
 
 struct Clock_Previews: PreviewProvider {
 	struct ClockPreview: View {
-		@StateObject var viewModel = ClockViewModel(client: .random)
+		@StateObject var viewModel = ClockViewModel(client: .fixed())
 		
 		var body: some View {
 			Clock(viewModel: viewModel)

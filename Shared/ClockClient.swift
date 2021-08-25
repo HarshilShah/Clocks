@@ -42,4 +42,10 @@ extension ClockClient {
 				.eraseToAnyPublisher()
 		}
 	}
+	
+	static func fixed(_ value: Date = Date()) -> ClockClient {
+		ClockClient {
+			Just(value).eraseToAnyPublisher()
+		}
+	}
 }
