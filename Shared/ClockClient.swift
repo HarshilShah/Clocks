@@ -13,22 +13,27 @@ struct ClockClient {
 }
 
 extension ClockClient {
-	/// We delay the timer publisher by the amount of time until the start of
-	/// the next minute, and then prepend that timestamp to the timer's
-	/// emissions because it only fires after it's duration has completed
+	/// The current time is emitted immediately, followed by the start of the
+	/// next minute, and after that a timer emits the current time every 60
+	/// seconds. Some noise is added to the start of the next minute time
+	/// because timers aren't guaranteed to fire on the dot, and so can fire
+	/// just before the minute changes
 	static var live: ClockClient {
 		ClockClient {
 			let now = Date()
 			let oneMinuteLater = Calendar.current.date(byAdding: .minute, value: 1, to: now)!
-			let startOfNextMinute = Calendar.current.dateInterval(of: .minute, for: oneMinuteLater)!.start
+			let startOfNextMinute = Calendar.current.dateInterval(of: .minute, for: oneMinuteLater)!.start.advanced(by: 2/10)
 			let delay = now.distance(to: startOfNextMinute)
 			
 			return Just(now)
-				.delay(for: .seconds(delay), scheduler: DispatchQueue.main)
 				.append(
-					Timer.publish(every: 60, tolerance: 0.01, on: .main, in: .default)
+					Just(startOfNextMinute)
+						.delay(for: .seconds(delay), scheduler: DispatchQueue.main)
+				)
+				.append(
+					Timer
+						.publish(every: 60, tolerance: 0.1, on: .main, in: .default)
 						.autoconnect()
-						.prepend(startOfNextMinute)
 				)
 				.eraseToAnyPublisher()
 		}
